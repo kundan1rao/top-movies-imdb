@@ -1,0 +1,29 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+## Scraping top bollywood movies list from IMDb
+```{r}
+library(rvest)
+library(dplyr)
+
+link="https://www.imdb.com/india/top-rated-indian-movies/"
+page = read_html(link)
+
+TopBollywoodMovies = page %>% html_nodes(".titleColumn a") %>% html_text()
+
+movie_links = page %>% html_nodes(".titleColumn a") %>% html_attr("href") %>% paste("https://www.imdb.com/", .,sep = "")
+
+yr_of_release = page %>% html_nodes(".secondaryInfo") %>% html_text()
+
+Star = page %>% html_nodes("strong") %>% html_text()
+
+#t = page %>% html_table("table")
+
+top_movies = data.frame(TopBollywoodMovies,yr_of_release,Star)
+
+top_movies
+```
